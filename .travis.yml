@@ -8,8 +8,12 @@ arch:
   - ppc64le
 go: 
  - 1.15.6
- - tip
 
+install:
+  - make goget-tools
 script:
- - make
- - make test
+  - lsb_release -a
+  - export PATH="$PATH:$GOPATH/bin"
+  - make bin
+  - make validate
+  - make test-coverage
