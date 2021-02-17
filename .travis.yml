@@ -78,7 +78,25 @@ jobs:
         - travis_wait make test-cmd-cmp
         - travis_wait make test-plugin-handler
         - odo logout
-
+        
+    # YAML alias, for settings shared across the tests on PPC64le
+    - &base-test
+      sudo: required
+      stage: test
+      arch:
+       - ppc64le
+      go: 
+       - 1.15.6
+      install:
+        - make goget-tools
+      script:
+        - lsb_release -a
+        - export PATH="$PATH:$GOPATH/bin"
+        - make bin
+        - make validate
+        - make test-coverage
+      
+      
     - <<: *base-test
       stage: test
       name: "preference, config, component sub-commands and debug command integration tests"
